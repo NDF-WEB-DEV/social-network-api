@@ -1,4 +1,5 @@
 const router = require ('express').Router();
+
 const{
     getUsers,           // GET *
     getSingleUser,      // GET by ID
@@ -28,3 +29,5 @@ router.route('/user/:userId/addFriend/:userId').post(addNewFriend);
 
 // /api/user/:userId/removeFriend/:userId
 router.route('/user/:userId/addFriend/:userId').post(removeFriend);
+
+module.exports = router;

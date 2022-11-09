@@ -31,7 +31,7 @@ const reactionSchema = new Schema(
     }
 );
 
-const formatTimestamp = produce.get('createdAt', );
+const formatTimestamp = produce.get('createdAt');
 console.log(formatTimestamp);
 
 module.exports = reactionSchema;
