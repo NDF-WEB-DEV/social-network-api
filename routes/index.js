@@ -1,8 +1,6 @@
 const router = require('express').Router();
-const thoughtRoutes = require('./thoughtRoutes');
-const userRoutes = require('./userRoutes');
+const apiRoutes = require('./api');  //points or links to the api directory
 
-router.use('/thought', thoughtRoutes);
-router.use('/user', userRoutes);
+router.use('/api', apiRoutes);  //origin route for all api routes
 
 module.exports = router;
