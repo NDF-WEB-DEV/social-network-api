@@ -36,16 +36,12 @@ module.exports = {
     getSingleUser(req, res) {
         User.findOne({_id: req.params.userId}) // finding by user input => "params"
         .select('-__v') // <= removing Mongoose version key
-        .then(async (user) => 
+        .then((user) => 
             !user //if user not found
             ? res.status(404).json({message: 'We could not match a user with that ID'}) // then print message
-            : res.json({user, userThoughtsAndFriendData: await userThoughtsAndFriendData(req.params.userId), // else display user's username
-            })
-        )
-        .catch((err) => {
-            console.log(err);
-            return res.status(500).json(err);
-        });
+            : res.json({user, userThoughtsAndFriendData: await userThoughtsAndFriendData(req.params.userId)}) // else display user's username
+            )
+        .catch((err) => res.status(500).json(err));
     },
 
     //CREATE new user
