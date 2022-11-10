@@ -11,13 +11,13 @@ module.exports = {
     },
 
     //GET single Thought
-    getsingleThought(req, res) {
+    getSingleThought(req, res) {
         Thought.findOne({_id: req.params.thoughtId}) // find thought by id
         .then((thought) => 
             !thought // if not found
             ? res.status(404).json({message: 'We did not find a thought with this ID'}) //print message
             : res.json(thought) // else display the thought
-        ): 
+        )
         .catch((err) => res.status(500).json(err));
     },
 
@@ -64,7 +64,7 @@ module.exports = {
     deleteThought(req, res) {
         Thought.findOneAndRemove({_id: req.params.thoughtId}) 
         then((thought) => 
-            !thought  //If thougth not found
+            !thought  //If thought not found
                 ? res.status(404).json({message: 'A thought with this ID was not found'}) //then print message
                 : User.findOneAndUpdate(  //find user associated with this Thought
                     {users: req.params.userId}, //get info from object parameter

@@ -24,7 +24,7 @@
 ### **Tests**
 N/A
 ### **Usage**
-This application can be used to replicate the back-end of a social network.
+This application can be used to replicate the back-end of a social network. You will need to reun the application on imsonia in order to see the back-end at work. There is a screeshot avaialble that illustrates how the insomnia project should look.
 ### **Questions**
 Contact me with questions via [GitHub](https://github.com/NDF-WEB-DEV) or send an email to: nordleendefrias@gmail.com
 ### **Report Issues**
@@ -36,5 +36,6 @@ This is a school project.
 * [Mongoose Library](https://mongoosejs.com/)
 * [Download Compass](https://www.mongodb.com/products/compass)
 * [Express js Library](https://expressjs.com/)
+* [Insomnia API call app](https://insomnia.rest/)
 ### **License**
 N/A

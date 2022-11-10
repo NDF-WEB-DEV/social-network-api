@@ -28,7 +28,6 @@ module.exports = {
             return res.json(userObject);
     })
     .catch((err) => {
-        console.log(err);
         return res.status(500).json(err);
     });
 
@@ -51,12 +50,69 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
 
-    //delete user and remove their 
+    //PUT Update user 
+    UpdateUser(req, res) {
+        User.findOneAndUpdate(
+            {_id: req.params.userId},
+            {$set: req.body},
+            {runValidators: true, new: true},
+        )
+        .then((user) => 
+        !user
+            ? res.status(404).json({message: 'Could not locate a user with this ID'})
+            : res.json(user)
+        )
+        .catch((err) => res.status(500).json(err));
+    },
 
+    //DELETE user
+    deleteUser(req, res) {
+        User.findOneAndRemove({_id: req.params.userId})
+        then((user) => 
+            !user //if user not found
+                ? res.status(404).json({message: 'Could not locate a user with this ID'})
+                : Thoughts.deleteMany({_id: {$in: user.thoughts} })
+                )
+                .then(()=> res.json({message: "User and associated thoughts were deleted"}))
+                .catch((err) => res.status(500).json(err));
+    },
 
+    //POST - Add a new friend
+    addNewFriend(req, res) {
+        User.findOne({_id: req.params.userId}) //find friend by their user id
+        .then((user) => { //then
+            return User.findOneAndUpdate( //update it
+                {$push: {user: user.friends}}, //add it to the friends list
+                {new: true} //as a new friend
+            );
+        })
+        .then((user) =>
+            !user
+            ? res.status(404).json({message: 'Friend user was not found'}) //print messages
+            : res.json('Friend was added to the friends list')
+        )
+        .catch((err) => {
+            res.status(500).json(err);
+        })
+    },
 
-
-
-
+    // DELETE - Remove a Friend
+    removeFriend(req, res) {
+        User.findOneAndRemove({_id: req.params.userId}) //find user by id
+        .then((user) => {
+            !user //if user not found
+            ? res.status(404).json({message: 'User with this ID was not found'})
+            : User.findOneAndUpdate(  //find user associated with this user
+                {users: req.params.userId}, //get info from object parameter
+                {$pull: {friends: req.params.userId}}, //removes user from an array of users
+                {new: true} //Returns the document after update was applied.
+            )
+        })
+        .then((user) => 
+            !user //if user not found
+            ? res.status(404).json({message: 'User with this ID was not found'})
+            : res.json({message: 'Friend was removed from the friends list'})
+        )
+    }
 
 };
