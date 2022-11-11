@@ -17,6 +17,7 @@ const userSchema = new Schema(
             validate: {
                 validator: () => Promise.resolve(false),
                 message: 'Email validation failed'
+            },
         },
         thoughts: [
             {
@@ -24,21 +25,22 @@ const userSchema = new Schema(
                 ref: 'Thought',
             },
         ],
+        thoughtSchema: [thoughtSchema], 
         friends: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }
-        ]
+        ],
+        reactionSchema: [reactionSchema],
     },
-    assignments: [thoughtSchema], [reactionSchema]:
     {
         toJSON: {
             virtuals: true,
         },
         id: false,
     }
-});
+);
 
 // create a virtual friend count
 // that retrieves the lenght of the user's freinds array feild on query.

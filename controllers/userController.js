@@ -1,4 +1,4 @@
-const {ObjectId} = require('mongoose').types;
+const {ObjectId} = require('mongoose').Types;
 const {User, Thought} = require('../models');
 
 // Function to count a User's friends
@@ -23,13 +23,11 @@ module.exports = {
     getUsers(req, res) {
         User.find()
         .then(async (users) => {
-            const userObject = {users, friendCount: await friendCount()
-            };
+            const userObject = {users, friendCount: await friendCount()};
             return res.json(userObject);
     })
-    .catch((err) => {
-        return res.status(500).json(err);
-    });
+    .catch((err) => res.status(500).json(err))
+    },
 
     //GET a single user by ID
     getSingleUser(req, res) {
@@ -38,7 +36,7 @@ module.exports = {
         .then((user) => 
             !user //if user not found
             ? res.status(404).json({message: 'We could not match a user with that ID'}) // then print message
-            : res.json({user, userThoughtsAndFriendData: await userThoughtsAndFriendData(req.params.userId)}) // else display user's username
+            : res.json({user, userThoughtsAndFriendData: userThoughtsAndFriendData(req.params.userId)}) // else display user's username
             )
         .catch((err) => res.status(500).json(err));
     },
