@@ -20,19 +20,22 @@ const reactionSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            timestamp: true,
+            // get: formatTimestamp,
+            
         },
     },
     {
+        timestamps: true,
         toJSON: {
             getters: true,
+            // virtuals: true,
         },
         id: false,
     }
 );
 
 //Use a getter method to format the timestamp on query
-const formatTimestamp = produce.get('createdAt');
-console.log(formatTimestamp);
+// const formatTimestamp = produce.get('createdAt');
+// console.log(formatTimestamp);
 
 module.exports = reactionSchema;

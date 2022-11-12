@@ -1,5 +1,5 @@
 const {ObjectId} = require('mongoose').Types;
-const {User, Thought} = require('../models');
+const {User, Thought, Reaction} = require('../models');
 
 // Function to count a User's friends
 const friendCount = async () => {
@@ -53,20 +53,23 @@ module.exports = {
         User.findOneAndUpdate(
             {_id: req.params.userId},
             {$set: req.body},
-            {runValidators: true, new: true},
+            {runValidators: true, new: true}
         )
         .then((user) => 
         !user
             ? res.status(404).json({message: 'Could not locate a user with this ID'})
             : res.json(user)
         )
-        .catch((err) => res.status(500).json(err));
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
     },
 
     //DELETE user
     deleteUser(req, res) {
         User.findOneAndRemove({_id: req.params.userId})
-        then((user) => 
+        .then((user) => 
             !user //if user not found
                 ? res.status(404).json({message: 'Could not locate a user with this ID'})
                 : Thoughts.deleteMany({_id: {$in: user.thoughts} })
@@ -112,5 +115,4 @@ module.exports = {
             : res.json({message: 'Friend was removed from the friends list'})
         )
     }
-
 };
