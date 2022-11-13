@@ -25,19 +25,19 @@ const userSchema = new Schema(
                 ref: 'Thought',
             },
         ],
-        thoughtSchema: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Thought'
-            }
-        ], 
+        // thoughtSchema: [
+        //     {
+        //         type: Schema.Types.ObjectId,
+        //         ref: 'Thought'
+        //     }
+        // ], 
         friends: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }
         ],
-        reactionSchema: [reactionSchema],
+        // reactionSchema: [reactionSchema],
     },
     {
         toJSON: {

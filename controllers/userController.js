@@ -24,7 +24,7 @@ module.exports = {
         User.find()
         .then(async (users) => {
             const userObject = {users, friendCount: await friendCount()};
-            return res.json(userObject);
+            res.json(userObject);
     })
     .catch((err) => res.status(500).json(err))
     },
@@ -38,7 +38,10 @@ module.exports = {
             ? res.status(404).json({message: 'We could not match a user with that ID'}) // then print message
             : res.json({user, userThoughtsAndFriendData: userThoughtsAndFriendData(req.params.userId)}) // else display user's username
             )
-        .catch((err) => res.status(500).json(err));
+            .catch((err) => {
+                console.log(err);
+                return res.status(500).json(err);
+              });
     },
 
     //CREATE new user
@@ -68,7 +71,6 @@ module.exports = {
 
     //DELETE user
     deleteUser(req, res) {
-        console.log('i am here')
         User.findOneAndRemove({_id: req.params.userId})
         .then((user) => 
             !user //if user not found

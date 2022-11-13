@@ -4,8 +4,8 @@
 > This application was build to demonstrate the back-end of a social network application. It contains 3 models which are the User, The Thoughts and the Reactions. 
 
 ### **Application Link**
-[Link for the App]()
-[Link for Demo Video]()
+* [Link for the App]()
+* [Link for Demo Video]()
 
 ## **Table of Contents**
 - [Project Name](#project_name)
