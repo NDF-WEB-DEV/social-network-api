@@ -1,4 +1,5 @@
 const { Schema, Types } = require('mongoose');
+const Thought = require('./Thought');
 const thoughtSchema = require('./Thought');
 const userSchema = require('./User');
 
@@ -23,6 +24,8 @@ const reactionSchema = new Schema(
             // get: formatTimestamp,
             
         },
+        // thoughtSchema: [thoughtSchema],
+        // userSchema: [userSchema],
     },
     {
         timestamps: true,

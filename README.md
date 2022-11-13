@@ -1,10 +1,11 @@
 # Social Network API
 
 ### **Description**
-> This an application was build to demonstrate the back-end of a social network application. It contains 3 models whcih are the User, The Thoughts and the Reactions. 
+> This application was build to demonstrate the back-end of a social network application. It contains 3 models which are the User, The Thoughts and the Reactions. 
 
 ### **Application Link**
 [Link for the App]()
+[Link for Demo Video]()
 
 ## **Table of Contents**
 - [Project Name](#project_name)
@@ -19,8 +20,8 @@
 ### **Project Name**
 > Social Network API with NoSQL
 ### **Installation**
-* To install dependencies run: **npm i**
-* To start app run: **node index**
+* First install dependencies run: **npm i**
+* Second to start app run: **node index** or **npm start**
 ### **Tests**
 N/A
 ### **Usage**

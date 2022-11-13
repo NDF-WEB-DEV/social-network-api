@@ -49,7 +49,7 @@ module.exports = {
     },
 
     //PUT Update user 
-    UpdateUser(req, res) {
+    updateUser(req, res) {
         User.findOneAndUpdate(
             {_id: req.params.userId},
             {$set: req.body},
@@ -68,6 +68,7 @@ module.exports = {
 
     //DELETE user
     deleteUser(req, res) {
+        console.log('i am here')
         User.findOneAndRemove({_id: req.params.userId})
         .then((user) => 
             !user //if user not found
@@ -79,11 +80,12 @@ module.exports = {
     },
 
     //POST - Add a new friend
-    addNewFriend(req, res) {
-        User.findOne({_id: req.params.userId}) //find friend by their user id
-        .then((user) => { //then
-            return User.findOneAndUpdate( //update it
-                {$push: {user: user.friends}}, //add it to the friends list
+    addFriend(req, res) {
+        User.findOneAndUpdate({_id: req.params.userId}) //find friend by their user id
+        .then((user) => {
+            User.findOneAndUpdate( //update it
+                {users: req.params.userId},
+                {$addToSet: {friends: ObjectId}}, //adds a value to an array unless the value is already present, 
                 {new: true} //as a new friend
             );
         })
@@ -105,7 +107,7 @@ module.exports = {
             ? res.status(404).json({message: 'User with this ID was not found'})
             : User.findOneAndUpdate(  //find user associated with this user
                 {users: req.params.userId}, //get info from object parameter
-                {$pull: {friends: req.params.userId}}, //removes user from an array of users
+                {$pull: {friends: ObjectId}}, //removes user from an array of users
                 {new: true} //Returns the document after update was applied.
             )
         })
