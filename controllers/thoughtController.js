@@ -1,4 +1,4 @@
-// const {ObjectId} = require('mongoose').types;
+const {ObjectId} = require('mongoose').Types;
 const {User, Reaction, Thought} = require('../models');
 
 module.exports = {
@@ -23,25 +23,34 @@ module.exports = {
 
     //POST Create a new thought + Push the new thought ID to the associated user's thought array field
     createThought(req, res) {
-        Thought.create(req.body) //Thought object
-        .then((thought) => {
-            return User.findOneAndUpdate( //find the user
-                // {thoughts: req.body.thoughtText}, //access input for thought content
-                {username: req.body.username}, //access input for user name
-                // {_id: req.body.userId},  //access input for ID
-                {$push: {thoughts: thought._id}}, //Push the new thought ID to the associated user's thought array field
-                {new: true} //as a new thought
-            );
-        })
-        .then((user) =>
-            !user // if user not found
-            ? res.status(404).json({message: 'Thought created, but associated user id was not found'})  // print message
-            : res.json('Thought was created') 
-        )
+        Thought.create(req.body)
+        .then((thoughts) => res.json(thoughts))
         .catch((err) => {
-            res.status(500).json(err);
-        });
+            console.log(err);
+            return res.status(500).json(err);
+        })
     },
+
+    // createThought(req, res) {
+    //     Thought.create(req.body) //Thought object
+    //     .then((thought) => {
+    //         return User.findOneAndUpdate( //find the user
+    //             {thoughts: req.body.thoughtText}, //access input for thought content
+    //             {username: req.body.username}, //access input for user name
+    //             {_id: req.body.User._id},  //access input for ID
+    //             {$push: {thoughts: thought._id}}, //Push the new thought ID to the associated user's thought array field
+    //             {new: true} //as a new thought
+    //         );
+    //     })
+    //     .then((user) =>
+    //         !user // if user not found
+    //         ? res.status(404).json({message: 'Thought created, but associated user id was not found'})  // print message
+    //         : res.json('Thought was created') 
+    //     )
+    //     .catch((err) => {
+    //         res.status(500).json(err);
+    //     });
+    // },
 
     //PUT Update thought by ID
     updateThought(req, res) {
@@ -82,8 +91,10 @@ module.exports = {
 
     // POST to create a reaction stored in a single thought's reactions array field
     createReaction(req, res) {
+        console.log('Adding a reaction');
+        console.log(req.body);
         Thought.findOneAndUpdate(
-            {_id: req.params.thoughtId},
+            {_id: req.params._id},
             {$addToSet: {reactions: req.body}}, //adds a value to an array unless the value is already present, 
             {new: true}
         )
@@ -98,7 +109,7 @@ module.exports = {
     //DELETE to pull and remove a reaction by the reaction's reactionId value
     removeReaction(req, res) {
         Thought.findOneAndUpdate( //find thought to remove reaction from
-            {_id: req.params.thoughtId}, //enter thoughts id
+            {_id: req.params._id}, //enter thoughts id
             {$pull: {reactions: {reactionId: req.params.reactionId}}}, // remove the reaction 
             {runValidators: true, new: true}
         )

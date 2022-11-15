@@ -1,11 +1,11 @@
 # Social Network API
 
 ### **Description**
-> This application was build to demonstrate the back-end of a social network application. It contains 3 models which are the User, The Thoughts and the Reactions. 
+> This application was build to demonstrate the back-end of a social network application. It contains three models which are the User, the Thoughts and the Reactions. 
 
 ### **Application Link**
-* [Link for the App]()
-* [Link for Demo Video]()
+* [Link for the App](https://github.com/NDF-WEB-DEV/social-network-api)
+* [Link for Demo Video](https://drive.google.com/file/d/1RwgC6kXczg6y-wezRI-Q3Np3gJei6VtO/view)
 
 ## **Table of Contents**
 - [Project Name](#project_name)

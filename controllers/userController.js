@@ -10,10 +10,10 @@ const friendCount = async () => {
 // Function that pulls the populated thoughts and friend data
 const userThoughtsAndFriendData = async () => {
     User.aggregate([
-        {$match: {_id: ObjectId(userId)}},  //matching by user id
+        {$match: {_id: ObjectId}},  //matching by user id
         {$unwind: '$thoughts',},            //Deconstructs an array field from the input documents to output a document for each element.
         {$unwind: '$friends'},              //same as line 14
-        {$group: {_id: ObjectId(userId), friendData: '$friends'}}, //group data by userID and friends
+        {$group: {_id: ObjectId, friendData: '$friends'}}, //group data by userID and friends
         {$sort: {username: 1}},
     ])
 };
@@ -71,11 +71,11 @@ module.exports = {
 
     //DELETE user
     deleteUser(req, res) {
-        User.findOneAndRemove({_id: req.params.userId})
+        User.findOneAndDelete({_id: req.params.userId})
         .then((user) => 
             !user //if user not found
                 ? res.status(404).json({message: 'Could not locate a user with this ID'})
-                : Thoughts.deleteMany({_id: {$in: user.thoughts} })
+                : Thought.deleteMany({_id: {$in: user.thoughts} })
                 )
                 .then(()=> res.json({message: "User and associated thoughts were deleted"}))
                 .catch((err) => res.status(500).json(err));
@@ -83,14 +83,11 @@ module.exports = {
 
     //POST - Add a new friend
     addFriend(req, res) {
-        User.findOneAndUpdate({_id: req.params.userId}) //find friend by their user id
-        .then((user) => {
-            User.findOneAndUpdate( //update it
-                {users: req.params.userId},
-                {$addToSet: {friends: ObjectId}}, //adds a value to an array unless the value is already present, 
-                {new: true} //as a new friend
-            );
-        })
+        User.findOneAndUpdate(
+            {_id: req.params.userId}, //find friend by their user id
+            {$addToSet: {friends: req.params.friendsId}}, //adds a value to an array unless the value is already present, 
+            {new: true} //as a new friend
+        )
         .then((user) =>
             !user
             ? res.status(404).json({message: 'Friend user was not found'}) //print messages
@@ -101,22 +98,39 @@ module.exports = {
         })
     },
 
+
+    // addFriend(req, res) {
+    //     User.findOneAndUpdate(
+    //         {_id: req.params.userId}) //find friend by their user id
+    //     .then((user) => {
+    //         User.findOneAndUpdate( //update it
+    //             {users: req.params.userId},
+    //             {$addToSet: {friends: ObjectId}}, //adds a value to an array unless the value is already present, 
+    //             {new: true} //as a new friend
+    //         );
+    //     })
+    //     .then((user) =>
+    //         !user
+    //         ? res.status(404).json({message: 'Friend user was not found'}) //print messages
+    //         : res.json('Friend was added to the friends list')
+    //     )
+    //     .catch((err) => {
+    //         res.status(500).json(err);
+    //     })
+    // },
+
     // DELETE - Remove a Friend
     removeFriend(req, res) {
-        User.findOneAndRemove({_id: req.params.userId}) //find user by id
-        .then((user) => {
-            !user //if user not found
-            ? res.status(404).json({message: 'User with this ID was not found'})
-            : User.findOneAndUpdate(  //find user associated with this user
-                {users: req.params.userId}, //get info from object parameter
-                {$pull: {friends: ObjectId}}, //removes user from an array of users
-                {new: true} //Returns the document after update was applied.
-            )
-        })
+        User.findOneAndUpdate(
+            {_id: req.params.userId},
+            {$pull: {friends: req.param.friendsId}}, //removes user from an array of users
+            {new: true} //Returns the document after update was applied.            
+        ) //find user by id
         .then((user) => 
             !user //if user not found
             ? res.status(404).json({message: 'User with this ID was not found'})
             : res.json({message: 'Friend was removed from the friends list'})
         )
+        .catch((err) => res.status(500).json(err));
     }
 };
