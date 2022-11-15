@@ -5,7 +5,7 @@
 
 ### **Application Link**
 * [Link for the App](https://github.com/NDF-WEB-DEV/social-network-api)
-* [Link for Demo Video](https://drive.google.com/file/d/1RwgC6kXczg6y-wezRI-Q3Np3gJei6VtO/view)
+* [Link for Demo Video](https://drive.google.com/file/d/1RwgC6kXczg6y-wezRI-Q3Np3gJei6VtO/view?usp=sharing)
 
 ## **Table of Contents**
 - [Project Name](#project_name)
